@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Story Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Base theme - Leather-bound (default) */
+            --bg-primary: #1a1915;
+            --bg-secondary: #242119;
+            --bg-tertiary: #2e2a23;
+            --text-primary: #e8e4dc;
+            --text-secondary: #a09888;
+            --text-muted: #6b6358;
+            --border-color: #3d3830;
+            --accent: #c9a227;
+            --accent-dim: #8b7320;
+            --btn-primary-text: #1a1915;
+            
+            /* Object type colors - Standard palette */
+            --color-act: #8b5cf6;
+            --color-beat: #10b981;
+            --color-chapter: #3b82f6;
+            --color-outline: #f59e0b;
+        }
+
+        /* ==================== THEMES ==================== */
+        
+        /* Leather-bound (default) */
+        [data-theme="leather-bound"] {
+            --bg-primary: #1a1915;
+            --bg-secondary: #242119;
+            --bg-tertiary: #2e2a23;
+            --text-primary: #e8e4dc;
+            --text-secondary: #a09888;
+            --text-muted: #6b6358;
+            --border-color: #3d3830;
+            --accent: #c9a227;
+            --accent-dim: #8b7320;
+            --btn-primary-text: #1a1915;
+        }
+
+        /* Vegan Leather */
+        [data-theme="vegan-leather"] {
+            --bg-primary: #2a2520;
+            --bg-secondary: #363029;
+            --bg-tertiary: #423b32;
+            --text-primary: #f0ebe3;
+            --text-secondary: #b8ad9c;
+            --text-muted: #8a7f70;
+            --border-color: #524a3f;
+            --accent: #d4b445;
+            --accent-dim: #a68c35;
+            --btn-primary-text: #1a1915;
+        }
+
+        /* Light */
+        [data-theme="light"] {
+            --bg-primary: #f5f5f5;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e8e8e8;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --text-muted: #888888;
+            --border-color: #d0d0d0;
+            --accent: #2563eb;
+            --accent-dim: #1d4ed8;
+            --btn-primary-text: #ffffff;
+        }
+
+        /* Dark/Night (OLED) */
+        [data-theme="dark"] {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-tertiary: #141414;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #606060;
+            --border-color: #2a2a2a;
+            --accent: #3b82f6;
+            --accent-dim: #2563eb;
+            --btn-primary-text: #ffffff;
+        }
+
+        /* Noir */
+        [data-theme="noir"] {
+            --bg-primary: #0d0d0d;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #252525;
+            --text-primary: #e0e0e0;
+            --text-secondary: #909090;
+            --text-muted: #505050;
+            --border-color: #333333;
+            --accent: #ffffff;
+            --accent-dim: #b0b0b0;
+            --btn-primary-text: #0d0d0d;
+        }
+
+        /* IBM */
+        [data-theme="ibm"] {
+            --bg-primary: #d4d4c8;
+            --bg-secondary: #e8e8dc;
+            --bg-tertiary: #c8c8bc;
+            --text-primary: #2b2b2b;
+            --text-secondary: #4a4a4a;
+            --text-muted: #707070;
+            --border-color: #a0a090;
+            --accent: #1a5276;
+            --accent-dim: #154360;
+            --btn-primary-text: #ffffff;
+        }
+
+        /* Mac */
+        [data-theme="mac"] {
+            --bg-primary: #f0f5ff;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e3ecff;
+            --text-primary: #1d1d1f;
+            --text-secondary: #515154;
+            --text-muted: #86868b;
+            --border-color: #d2d2d7;
+            --accent: #007aff;
+            --accent-dim: #0056cc;
+            --btn-primary-text: #ffffff;
+        }
+
+        /* Linux Terminal */
+        [data-theme="linux"] {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #0d1a0d;
+            --bg-tertiary: #0f220f;
+            --text-primary: #00ff00;
+            --text-secondary: #00cc00;
+            --text-muted: #008800;
+            --border-color: #004400;
+            --accent: #00ff00;
+            --accent-dim: #00aa00;
+            --btn-primary-text: #0a0a0a;
+        }
+
+        /* Romance */
+        [data-theme="romance"] {
+            --bg-primary: #fff0f5;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #ffe4ec;
+            --text-primary: #4a2c3d;
+            --text-secondary: #7a5568;
+            --text-muted: #b08898;
+            --border-color: #f0c0d0;
+            --accent: #e91e63;
+            --accent-dim: #c2185b;
+            --btn-primary-text: #ffffff;
+        }
+
+        /* Grimdark */
+        [data-theme="grimdark"] {
+            --bg-primary: #1a0a0a;
+            --bg-secondary: #2a1515;
+            --bg-tertiary: #3a1f1f;
+            --text-primary: #e0c0c0;
+            --text-secondary: #a08080;
+            --text-muted: #705050;
+            --border-color: #4a2a2a;
+            --accent: #cc0000;
+            --accent-dim: #990000;
+            --btn-primary-text: #ffffff;
+        }
+
+        /* Fantasy */
+        [data-theme="fantasy"] {
+            --bg-primary: #1a2416;
+            --bg-secondary: #243320;
+            --bg-tertiary: #2e4228;
+            --text-primary: #e0ead8;
+            --text-secondary: #a8b89c;
+            --text-muted: #708060;
+            --border-color: #405030;
+            --accent: #8b6914;
+            --accent-dim: #6b5010;
+            --btn-primary-text: #ffffff;
+        }
+
+        /* Lapis Lazuli */
+        [data-theme="lapis"] {
+            --bg-primary: #0a1628;
+            --bg-secondary: #0f2040;
+            --bg-tertiary: #152a50;
+            --text-primary: #d4af37;
+            --text-secondary: #b8960f;
+            --text-muted: #8a700a;
+            --border-color: #1a3560;
+            --accent: #ffd700;
+            --accent-dim: #ccac00;
+            --btn-primary-text: #0a1628;
+        }
+
+        /* Sepia */
+        [data-theme="sepia"] {
+            --bg-primary: #f4ecd8;
+            --bg-secondary: #faf6eb;
+            --bg-tertiary: #e8dfc8;
+            --text-primary: #5c4a32;
+            --text-secondary: #7a6548;
+            --text-muted: #a08860;
+            --border-color: #d0c4a8;
+            --accent: #8b4513;
+            --accent-dim: #6b3410;
+            --btn-primary-text: #ffffff;
+        }
+
+        /* Cyberpunk */
+        [data-theme="cyberpunk"] {
+            --bg-primary: #0a0a14;
+            --bg-secondary: #12121f;
+            --bg-tertiary: #1a1a2e;
+            --text-primary: #00ffff;
+            --text-secondary: #ff00ff;
+            --text-muted: #8080a0;
+            --border-color: #2a2a4a;
+            --accent: #ff0080;
+            --accent-dim: #cc0066;
+            --btn-primary-text: #ffffff;
+        }
+
+        /* Ocean */
+        [data-theme="ocean"] {
+            --bg-primary: #0a1a2a;
+            --bg-secondary: #0f2840;
+            --bg-tertiary: #153550;
+            --text-primary: #e0f0ff;
+            --text-secondary: #80b0d0;
+            --text-muted: #507090;
+            --border-color: #204060;
+            --accent: #00bcd4;
+            --accent-dim: #0097a7;
+            --btn-primary-text: #0a1a2a;
+        }
+
+        /* Parchment */
+        [data-theme="parchment"] {
+            --bg-primary: #f5f0e1;
+            --bg-secondary: #fdfaf0;
+            --bg-tertiary: #ebe5d0;
+            --text-primary: #3d3225;
+            --text-secondary: #5a4a38;
+            --text-muted: #8a7a60;
+            --border-color: #c8bda0;
+            --accent: #8b0000;
+            --accent-dim: #6b0000;
+            --btn-primary-text: #ffffff;
+        }
+
+        /* ==================== COLOR PALETTES ==================== */
+        
+        /* Standard */
+        [data-palette="standard"] {
+            --color-act: #8b5cf6;
+            --color-beat: #10b981;
+            --color-chapter: #3b82f6;
+            --color-outline: #f59e0b;
+        }
+
+        /* RYGB */
+        [data-palette="rygb"] {
+            --color-act: #ef4444;
+            --color-beat: #eab308;
+            --color-chapter: #22c55e;
+            --color-outline: #3b82f6;
+        }
+
+        /* Greyscale */
+        [data-palette="greyscale"] {
+            --color-act: #e5e5e5;
+            --color-beat: #a3a3a3;
+            --color-chapter: #737373;
+            --color-outline: #404040;
+        }
+
+        /* Protanopia (red-blind) */
+        [data-palette="protanopia"] {
+            --color-act: #0077bb;
+            --color-beat: #33bbee;
+            --color-chapter: #009988;
+            --color-outline: #ee7733;
+        }
+
+        /* Deuteranopia (green-blind) */
+        [data-palette="deuteranopia"] {
+            --color-act: #0077bb;
+            --color-beat: #33bbee;
+            --color-chapter: #cc3311;
+            --color-outline: #ee7733;
+        }
+
+        /* Tritanopia (blue-blind) */
+        [data-palette="tritanopia"] {
+            --color-act: #ee3377;
+            --color-beat: #009988;
+            --color-chapter: #ee7733;
+            --color-outline: #cc3311;
+        }
+
+        /* Monochromacy (total color blindness) */
+        [data-palette="monochromacy"] {
+            --color-act: #f0f0f0;
+            --color-beat: #b0b0b0;
+            --color-chapter: #707070;
+            --color-outline: #383838;
+        }
+
+        /* High Contrast */
+        [data-palette="high-contrast"] {
+            --color-act: #ff0000;
+            --color-beat: #00ff00;
+            --color-chapter: #0000ff;
+            --color-outline: #ffff00;
+        }
+
+        /* Pastel */
+        [data-palette="pastel"] {
+            --color-act: #c9b1ff;
+            --color-beat: #98e4c9;
+            --color-chapter: #93c5fd;
+            --color-outline: #fcd34d;
+        }
+
+        /* Neon */
+        [data-palette="neon"] {
+            --color-act: #ff00ff;
+            --color-beat: #00ff88;
+            --color-chapter: #00ccff;
+            --color-outline: #ffcc00;
+        }
+
+        /* Earth Tones */
+        [data-palette="earth"] {
+            --color-act: #8b4513;
+            --color-beat: #6b8e23;
+            --color-chapter: #4682b4;
+            --color-outline: #daa520;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1.5rem;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: var(--border-color);
+            border-color: var(--text-muted);
+        }
+
+        .btn-primary {
+            background: var(--accent-dim);
+            border-color: var(--accent);
+            color: var(--btn-primary-text, var(--bg-primary));
+        }
+
+        .btn-primary:hover {
+            background: var(--accent);
+            color: var(--btn-primary-text, var(--bg-primary));
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 60px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-title {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .theme-select {
+            width: 100%;
+            padding: 0.6rem 0.75rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .theme-select:hover {
+            border-color: var(--text-muted);
+        }
+
+        .theme-select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .theme-select option,
+        .theme-select optgroup {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .object-palette {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .palette-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: grab;
+            transition: all 0.2s ease;
+        }
+
+        .palette-item:hover {
+            border-color: var(--text-muted);
+            transform: translateX(4px);
+        }
+
+        .palette-item:active {
+            cursor: grabbing;
+        }
+
+        .color-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .palette-item-name {
+            font-size: 0.9rem;
+            flex-grow: 1;
+        }
+
+        .color-picker-mini {
+            width: 20px;
+            height: 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .color-picker-mini::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .color-picker-mini::-webkit-color-swatch {
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        /* Canvas Area */
+        .canvas {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .story-title-input {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 2rem;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            width: 100%;
+            margin-bottom: 2rem;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.2s ease;
+        }
+
+        .story-title-input:focus {
+            outline: none;
+            border-bottom-color: var(--accent);
+        }
+
+        .story-title-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Object Items */
+        .objects-container {
+            min-height: 400px;
+            padding: 1rem;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            transition: border-color 0.2s ease;
+        }
+
+        .objects-container.drag-over {
+            border-color: var(--accent);
+            background: rgba(201, 162, 39, 0.05);
+        }
+
+        .object-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .object-item.dragging {
+            opacity: 0.5;
+            transform: scale(0.98);
+        }
+
+        .object-item.drag-over-item {
+            border-top: 2px solid var(--accent);
+        }
+
+        .object-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            cursor: grab;
+        }
+
+        .object-header:active {
+            cursor: grabbing;
+        }
+
+        .drag-handle {
+            color: var(--text-muted);
+            font-size: 1rem;
+            cursor: grab;
+        }
+
+        .object-color-bar {
+            width: 4px;
+            height: 24px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .object-type-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .indent-controls {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .indent-btn {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            line-height: 1;
+        }
+
+        .indent-btn:hover {
+            background: var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .object-title-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+
+        .object-title-input:focus {
+            outline: none;
+        }
+
+        .object-actions {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .object-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .object-btn:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .object-content {
+            padding: 0 1rem 1rem 3rem;
+            display: none;
+        }
+
+        .object-content.expanded {
+            display: block;
+        }
+
+        .field-group {
+            margin-bottom: 0.75rem;
+        }
+
+        .field-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .field-input, .field-textarea {
+            width: 100%;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 0.5rem;
+            color: var(--text-primary);
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .field-input:focus, .field-textarea:focus {
+            outline: none;
+            border-color: var(--accent-dim);
+        }
+
+        .field-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .field-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .field-row .field-group {
+            flex: 1;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--accent);
+        }
+
+        .checkbox-group label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Note toggle */
+        .add-note-btn {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            background: transparent;
+            border: 1px dashed var(--border-color);
+            padding: 0.5rem;
+            width: 100%;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .add-note-btn:hover {
+            border-color: var(--text-muted);
+            color: var(--text-secondary);
+        }
+
+        .removable-field {
+            position: relative;
+        }
+
+        .remove-field-btn {
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            line-height: 1;
+        }
+
+        .remove-field-btn:hover {
+            background: #dc2626;
+            border-color: #dc2626;
+            color: white;
+        }
+
+        .optional-fields-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .add-field-btn {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: transparent;
+            border: 1px dashed var(--border-color);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .add-field-btn:hover {
+            border-color: var(--text-muted);
+            color: var(--text-secondary);
+        }
+
+        .note-field {
+            display: none;
+        }
+
+        .note-field.visible {
+            display: block;
+        }
+
+        /* Nested items */
+        .nested-objects {
+            margin-left: 1.5rem;
+            padding-left: 1rem;
+            border-left: 2px solid var(--border-color);
+            margin-top: 0.5rem;
+        }
+
+        /* Color override */
+        .color-override-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .color-override-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .color-override-picker {
+            width: 30px;
+            height: 24px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .color-override-picker::-webkit-color-swatch-wrapper {
+            padding: 2px;
+        }
+
+        .color-override-picker::-webkit-color-swatch {
+            border: none;
+            border-radius: 2px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state-text {
+            font-family: 'Libre Baskerville', serif;
+            font-style: italic;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-title {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        /* File input styling */
+        .file-input-wrapper {
+            position: relative;
+        }
+
+        .file-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            padding: 1rem 1.5rem;
+            color: var(--text-primary);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 300;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">Simple Story Planner</div>
+        <div class="header-actions">
+            <button class="btn" onclick="saveToFile()">💾 Export</button>
+            <button class="btn file-input-wrapper">
+                📂 Import
+                <input type="file" class="file-input" accept=".json" onchange="loadFromFile(event)">
+            </button>
+            <button class="btn" onclick="exportToDoc()">📄 Export .doc</button>
+            <button class="btn btn-primary" onclick="saveToLocal()">Save</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Add Objects</h3>
+                <div class="object-palette">
+                    <div class="palette-item" draggable="true" data-type="act">
+                        <div class="color-dot" style="background: var(--color-act)"></div>
+                        <span class="palette-item-name">Act</span>
+                        <input type="color" class="color-picker-mini" value="#8b5cf6" data-type="act" onchange="updateTypeColor('act', this.value)">
+                    </div>
+                    <div class="palette-item" draggable="true" data-type="beat">
+                        <div class="color-dot" style="background: var(--color-beat)"></div>
+                        <span class="palette-item-name">Beat</span>
+                        <input type="color" class="color-picker-mini" value="#10b981" data-type="beat" onchange="updateTypeColor('beat', this.value)">
+                    </div>
+                    <div class="palette-item" draggable="true" data-type="chapter">
+                        <div class="color-dot" style="background: var(--color-chapter)"></div>
+                        <span class="palette-item-name">Chapter</span>
+                        <input type="color" class="color-picker-mini" value="#3b82f6" data-type="chapter" onchange="updateTypeColor('chapter', this.value)">
+                    </div>
+                    <div class="palette-item" draggable="true" data-type="outline">
+                        <div class="color-dot" style="background: var(--color-outline)"></div>
+                        <span class="palette-item-name">Outline</span>
+                        <input type="color" class="color-picker-mini" value="#f59e0b" data-type="outline" onchange="updateTypeColor('outline', this.value)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Tips</h3>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7;">
+                    • Drag objects to add or reorder<br>
+                    • Use ◀ ▶ to adjust nesting<br>
+                    • Click ▼ to expand/collapse<br><br>
+                    <strong style="color: var(--text-primary);">Export</strong> — Save as .json to import later<br>
+                    <strong style="color: var(--text-primary);">Import</strong> — Load a previous .json export<br>
+                    <strong style="color: var(--text-primary);">Export .doc</strong> — Download as a Word doc<br>
+                    <strong style="color: var(--text-primary);">Save</strong> — Quick save to browser (clears if you clear browser data)
+                </p>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Theme</h3>
+                <select class="theme-select" id="themeSelect" onchange="setTheme(this.value)">
+                    <option value="leather-bound">Leather-bound</option>
+                    <option value="vegan-leather">Vegan Leather</option>
+                    <option value="light">Light</option>
+                    <option value="dark">Dark / Night</option>
+                    <option value="noir">Noir</option>
+                    <option value="ibm">IBM Vintage</option>
+                    <option value="mac">Mac</option>
+                    <option value="linux">Linux Terminal</option>
+                    <option value="romance">Romance</option>
+                    <option value="grimdark">Grimdark</option>
+                    <option value="fantasy">Fantasy</option>
+                    <option value="lapis">Lapis Lazuli</option>
+                    <option value="sepia">Sepia</option>
+                    <option value="cyberpunk">Cyberpunk</option>
+                    <option value="ocean">Ocean</option>
+                    <option value="parchment">Parchment</option>
+                </select>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Object Colors</h3>
+                <select class="theme-select" id="paletteSelect" onchange="setPalette(this.value)">
+                    <option value="standard">Standard</option>
+                    <option value="rygb">RYGB</option>
+                    <option value="greyscale">Greyscale</option>
+                    <option value="pastel">Pastel</option>
+                    <option value="neon">Neon</option>
+                    <option value="earth">Earth Tones</option>
+                    <option value="high-contrast">High Contrast</option>
+                    <optgroup label="Color Vision">
+                        <option value="protanopia">Protanopia (Red-blind)</option>
+                        <option value="deuteranopia">Deuteranopia (Green-blind)</option>
+                        <option value="tritanopia">Tritanopia (Blue-blind)</option>
+                        <option value="monochromacy">Monochromacy</option>
+                    </optgroup>
+                </select>
+            </div>
+        </aside>
+
+        <main class="canvas">
+            <input type="text" class="story-title-input" id="storyTitle" placeholder="Untitled Story..." value="">
+            
+            <div class="objects-container" id="objectsContainer">
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-state-icon">📖</div>
+                    <p class="empty-state-text">Drag objects here to begin your story...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // State
+        let storyData = {
+            title: '',
+            theme: 'leather-bound',
+            palette: 'standard',
+            typeColors: {
+                act: '#8b5cf6',
+                beat: '#10b981',
+                chapter: '#3b82f6',
+                outline: '#f59e0b'
+            },
+            objects: []
+        };
+
+        let draggedElement = null;
+        let draggedType = null;
+
+        // Theme and Palette functions
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            storyData.theme = theme;
+            autoSave();
+        }
+
+        function setPalette(palette) {
+            document.documentElement.setAttribute('data-palette', palette);
+            storyData.palette = palette;
+            
+            // Update the color pickers in sidebar to match palette
+            const paletteColors = getPaletteColors(palette);
+            Object.entries(paletteColors).forEach(([type, color]) => {
+                storyData.typeColors[type] = color;
+                const picker = document.querySelector(`.color-picker-mini[data-type="${type}"]`);
+                if (picker) picker.value = color;
+                const dot = document.querySelector(`.palette-item[data-type="${type}"] .color-dot`);
+                if (dot) dot.style.background = color;
+            });
+            
+            renderObjects();
+            autoSave();
+        }
+
+        function getPaletteColors(palette) {
+            const palettes = {
+                'standard': { act: '#8b5cf6', beat: '#10b981', chapter: '#3b82f6', outline: '#f59e0b' },
+                'rygb': { act: '#ef4444', beat: '#eab308', chapter: '#22c55e', outline: '#3b82f6' },
+                'greyscale': { act: '#e5e5e5', beat: '#a3a3a3', chapter: '#737373', outline: '#404040' },
+                'protanopia': { act: '#0077bb', beat: '#33bbee', chapter: '#009988', outline: '#ee7733' },
+                'deuteranopia': { act: '#0077bb', beat: '#33bbee', chapter: '#cc3311', outline: '#ee7733' },
+                'tritanopia': { act: '#ee3377', beat: '#009988', chapter: '#ee7733', outline: '#cc3311' },
+                'monochromacy': { act: '#f0f0f0', beat: '#b0b0b0', chapter: '#707070', outline: '#383838' },
+                'high-contrast': { act: '#ff0000', beat: '#00ff00', chapter: '#0000ff', outline: '#ffff00' },
+                'pastel': { act: '#c9b1ff', beat: '#98e4c9', chapter: '#93c5fd', outline: '#fcd34d' },
+                'neon': { act: '#ff00ff', beat: '#00ff88', chapter: '#00ccff', outline: '#ffcc00' },
+                'earth': { act: '#8b4513', beat: '#6b8e23', chapter: '#4682b4', outline: '#daa520' }
+            };
+            return palettes[palette] || palettes['standard'];
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFromLocal();
+            setupDragAndDrop();
+            
+            // Apply saved theme and palette
+            if (storyData.theme) {
+                document.documentElement.setAttribute('data-theme', storyData.theme);
+                document.getElementById('themeSelect').value = storyData.theme;
+            } else {
+                document.documentElement.setAttribute('data-theme', 'leather-bound');
+            }
+            
+            if (storyData.palette) {
+                document.documentElement.setAttribute('data-palette', storyData.palette);
+                document.getElementById('paletteSelect').value = storyData.palette;
+            } else {
+                document.documentElement.setAttribute('data-palette', 'standard');
+            }
+        });
+
+        // Drag and Drop Setup
+        function setupDragAndDrop() {
+            // Palette items
+            document.querySelectorAll('.palette-item').forEach(item => {
+                item.addEventListener('dragstart', (e) => {
+                    draggedType = item.dataset.type;
+                    draggedElement = null;
+                    e.dataTransfer.effectAllowed = 'copy';
+                });
+            });
+
+            // Container
+            const container = document.getElementById('objectsContainer');
+            
+            container.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                container.classList.add('drag-over');
+            });
+
+            container.addEventListener('dragleave', (e) => {
+                if (!container.contains(e.relatedTarget)) {
+                    container.classList.remove('drag-over');
+                }
+            });
+
+            container.addEventListener('drop', (e) => {
+                e.preventDefault();
+                container.classList.remove('drag-over');
+                
+                if (draggedType && !draggedElement) {
+                    // New item from palette
+                    addObject(draggedType);
+                }
+                draggedType = null;
+                draggedElement = null;
+            });
+        }
+
+        // Object Management
+        function addObject(type, parentId = null, insertAfterId = null) {
+            const id = 'obj_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            const newObject = {
+                id,
+                type,
+                title: '',
+                indent: 0,
+                expanded: true,
+                colorOverride: null,
+                note: '',
+                noteVisible: false,
+                fields: getDefaultFields(type)
+            };
+
+            storyData.objects.push(newObject);
+            renderObjects();
+            hideEmptyState();
+            autoSave();
+            
+            // Focus the title input
+            setTimeout(() => {
+                const el = document.querySelector(`[data-id="${id}"] .object-title-input`);
+                if (el) el.focus();
+            }, 50);
+        }
+
+        function getDefaultFields(type) {
+            // All types now have arrays for multiple optional fields
+            return {
+                description: '',
+                summary: '',
+                locations: [],      // Array of location strings
+                dates: [],          // Array of date strings
+                characters: [],     // Array of {name, isPOV} objects
+                notes: []           // Array of note strings
+            };
+        }
+
+        function deleteObject(id) {
+            storyData.objects = storyData.objects.filter(obj => obj.id !== id);
+            renderObjects();
+            if (storyData.objects.length === 0) showEmptyState();
+            autoSave();
+        }
+
+        function toggleExpand(id) {
+            const obj = storyData.objects.find(o => o.id === id);
+            if (obj) {
+                obj.expanded = !obj.expanded;
+                renderObjects();
+            }
+        }
+
+        function updateObjectField(id, field, value) {
+            const obj = storyData.objects.find(o => o.id === id);
+            if (obj) {
+                if (field === 'title' || field === 'indent' || field === 'colorOverride' || field === 'note' || field === 'noteVisible') {
+                    obj[field] = value;
+                } else {
+                    obj.fields[field] = value;
+                }
+                autoSave();
+            }
+        }
+
+        function changeIndent(id, delta) {
+            const obj = storyData.objects.find(o => o.id === id);
+            if (obj) {
+                obj.indent = Math.max(0, Math.min(5, obj.indent + delta));
+                renderObjects();
+                autoSave();
+            }
+        }
+
+        function toggleNote(id) {
+            // Legacy function - now handled by addArrayField
+            addArrayField(id, 'notes');
+        }
+
+        function addArrayField(id, fieldName) {
+            const obj = storyData.objects.find(o => o.id === id);
+            if (obj) {
+                if (!obj.fields[fieldName]) obj.fields[fieldName] = [];
+                if (fieldName === 'characters') {
+                    obj.fields[fieldName].push({ name: '', isPOV: false });
+                } else {
+                    obj.fields[fieldName].push('');
+                }
+                renderObjects();
+                autoSave();
+            }
+        }
+
+        function updateArrayField(id, fieldName, index, value) {
+            const obj = storyData.objects.find(o => o.id === id);
+            if (obj && obj.fields[fieldName]) {
+                obj.fields[fieldName][index] = value;
+                autoSave();
+            }
+        }
+
+        function updateCharacterField(id, index, property, value) {
+            const obj = storyData.objects.find(o => o.id === id);
+            if (obj && obj.fields.characters && obj.fields.characters[index]) {
+                obj.fields.characters[index][property] = value;
+                autoSave();
+            }
+        }
+
+        function removeArrayField(id, fieldName, index) {
+            const obj = storyData.objects.find(o => o.id === id);
+            if (obj && obj.fields[fieldName]) {
+                obj.fields[fieldName].splice(index, 1);
+                renderObjects();
+                autoSave();
+            }
+        }
+
+        function toggleField(id, field, value) {
+            // Legacy function - kept for backward compatibility
+            const obj = storyData.objects.find(o => o.id === id);
+            if (obj) {
+                obj.fields[field] = value;
+                renderObjects();
+                autoSave();
+            }
+        }
+
+        function removeField(id, fieldName) {
+            // Legacy function - kept for backward compatibility
+            const obj = storyData.objects.find(o => o.id === id);
+            if (obj) {
+                obj.fields[fieldName] = '';
+                obj.fields[fieldName + 'Visible'] = false;
+                renderObjects();
+                autoSave();
+            }
+        }
+
+        function removeNote(id) {
+            // Legacy function - kept for backward compatibility
+            const obj = storyData.objects.find(o => o.id === id);
+            if (obj) {
+                obj.note = '';
+                obj.noteVisible = false;
+                renderObjects();
+                autoSave();
+            }
+        }
+
+        // Rendering
+        function renderObjects() {
+            const container = document.getElementById('objectsContainer');
+            if (!container) return;
+            
+            if (storyData.objects.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" id="emptyState">
+                        <div class="empty-state-icon">📖</div>
+                        <p class="empty-state-text">Drag objects here to begin your story...</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            storyData.objects.forEach((obj, index) => {
+                html += renderObjectItem(obj, index);
+            });
+            
+            container.innerHTML = html;
+            
+            // Setup drag events for object items
+            container.querySelectorAll('.object-item').forEach(item => {
+                item.addEventListener('dragstart', handleObjectDragStart);
+                item.addEventListener('dragend', handleObjectDragEnd);
+                item.addEventListener('dragover', handleObjectDragOver);
+                item.addEventListener('dragleave', handleObjectDragLeave);
+                item.addEventListener('drop', handleObjectDrop);
+            });
+        }
+
+        function renderObjectItem(obj, index) {
+            const color = obj.colorOverride || storyData.typeColors[obj.type];
+            const indentPx = obj.indent * 32;
+            
+            return `
+                <div class="object-item" data-id="${obj.id}" data-index="${index}" draggable="true" style="margin-left: ${indentPx}px">
+                    <div class="object-header">
+                        <span class="drag-handle">⋮⋮</span>
+                        <div class="object-color-bar" style="background: ${color}"></div>
+                        <span class="object-type-label">
+                            ${obj.type}
+                            <span class="indent-controls">
+                                <button class="indent-btn" onclick="changeIndent('${obj.id}', -1)" title="Outdent">◀</button>
+                                <button class="indent-btn" onclick="changeIndent('${obj.id}', 1)" title="Indent">▶</button>
+                            </span>
+                        </span>
+                        <input type="text" class="object-title-input" placeholder="Enter title..." 
+                            value="${escapeHtml(obj.title)}" 
+                            onchange="updateObjectField('${obj.id}', 'title', this.value)">
+                        <div class="object-actions">
+                            <button class="object-btn" onclick="toggleExpand('${obj.id}')">${obj.expanded ? '▼' : '▶'}</button>
+                            <button class="object-btn" onclick="deleteObject('${obj.id}')">✕</button>
+                        </div>
+                    </div>
+                    <div class="object-content ${obj.expanded ? 'expanded' : ''}">
+                        ${renderObjectFields(obj)}
+                        <div class="color-override-row">
+                            <span class="color-override-label">Color override:</span>
+                            <input type="color" class="color-override-picker" 
+                                value="${obj.colorOverride || storyData.typeColors[obj.type]}"
+                                onchange="updateObjectField('${obj.id}', 'colorOverride', this.value)">
+                            ${obj.colorOverride ? `<button class="object-btn" onclick="updateObjectField('${obj.id}', 'colorOverride', null); renderObjects();">Reset</button>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderObjectFields(obj) {
+            // Ensure arrays exist (for backward compatibility with old data)
+            if (!obj.fields.locations) obj.fields.locations = [];
+            if (!obj.fields.dates) obj.fields.dates = [];
+            if (!obj.fields.characters) obj.fields.characters = [];
+            if (!obj.fields.notes) obj.fields.notes = [];
+            
+            let html = '';
+            
+            // Description/Summary field (always visible)
+            const descLabel = obj.type === 'outline' ? 'Summary' : 'Description';
+            const descField = obj.type === 'outline' ? 'summary' : 'description';
+            html += `
+                <div class="field-group">
+                    <label class="field-label">${descLabel}</label>
+                    <textarea class="field-textarea" placeholder="Enter ${descLabel.toLowerCase()}..."
+                        onchange="updateObjectField('${obj.id}', '${descField}', this.value)">${escapeHtml(obj.fields[descField] || '')}</textarea>
+                </div>
+            `;
+            
+            // Locations (grouped)
+            obj.fields.locations.forEach((loc, idx) => {
+                html += `
+                    <div class="field-group removable-field">
+                        <button class="remove-field-btn" onclick="removeArrayField('${obj.id}', 'locations', ${idx})" title="Remove location">✕</button>
+                        <label class="field-label">Location${obj.fields.locations.length > 1 ? ' ' + (idx + 1) : ''}</label>
+                        <input type="text" class="field-input" placeholder="Enter location..."
+                            value="${escapeHtml(loc)}"
+                            onchange="updateArrayField('${obj.id}', 'locations', ${idx}, this.value)">
+                    </div>
+                `;
+            });
+            
+            // Dates (grouped)
+            obj.fields.dates.forEach((date, idx) => {
+                html += `
+                    <div class="field-group removable-field">
+                        <button class="remove-field-btn" onclick="removeArrayField('${obj.id}', 'dates', ${idx})" title="Remove date">✕</button>
+                        <label class="field-label">Date${obj.fields.dates.length > 1 ? ' ' + (idx + 1) : ''}</label>
+                        <input type="text" class="field-input" placeholder="Enter date..."
+                            value="${escapeHtml(date)}"
+                            onchange="updateArrayField('${obj.id}', 'dates', ${idx}, this.value)">
+                    </div>
+                `;
+            });
+            
+            // Characters (grouped)
+            obj.fields.characters.forEach((char, idx) => {
+                html += `
+                    <div class="field-group removable-field">
+                        <button class="remove-field-btn" onclick="removeArrayField('${obj.id}', 'characters', ${idx})" title="Remove character">✕</button>
+                        <label class="field-label">Character${obj.fields.characters.length > 1 ? ' ' + (idx + 1) : ''}</label>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <input type="text" class="field-input" placeholder="Enter character name..." style="flex: 1;"
+                                value="${escapeHtml(char.name || '')}"
+                                onchange="updateCharacterField('${obj.id}', ${idx}, 'name', this.value)">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="pov_${obj.id}_${idx}" ${char.isPOV ? 'checked' : ''}
+                                    onchange="updateCharacterField('${obj.id}', ${idx}, 'isPOV', this.checked)">
+                                <label for="pov_${obj.id}_${idx}">POV</label>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Notes (grouped)
+            obj.fields.notes.forEach((note, idx) => {
+                html += `
+                    <div class="field-group removable-field">
+                        <button class="remove-field-btn" onclick="removeArrayField('${obj.id}', 'notes', ${idx})" title="Remove note">✕</button>
+                        <label class="field-label">Note${obj.fields.notes.length > 1 ? ' ' + (idx + 1) : ''}</label>
+                        <textarea class="field-textarea" placeholder="Additional notes..."
+                            onchange="updateArrayField('${obj.id}', 'notes', ${idx}, this.value)">${escapeHtml(note)}</textarea>
+                    </div>
+                `;
+            });
+            
+            // Add buttons row
+            html += `
+                <div class="optional-fields-row">
+                    <button class="add-field-btn" onclick="addArrayField('${obj.id}', 'locations')">+ Location</button>
+                    <button class="add-field-btn" onclick="addArrayField('${obj.id}', 'dates')">+ Date</button>
+                    <button class="add-field-btn" onclick="addArrayField('${obj.id}', 'characters')">+ Character</button>
+                    <button class="add-field-btn" onclick="addArrayField('${obj.id}', 'notes')">+ Note</button>
+                </div>
+            `;
+            
+            return html;
+        }
+
+        // Drag and Drop for reordering
+        function handleObjectDragStart(e) {
+            draggedElement = this;
+            draggedType = null;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleObjectDragEnd(e) {
+            this.classList.remove('dragging');
+            document.querySelectorAll('.object-item').forEach(item => {
+                item.classList.remove('drag-over-item');
+            });
+        }
+
+        function handleObjectDragOver(e) {
+            e.preventDefault();
+            if (draggedElement && draggedElement !== this) {
+                this.classList.add('drag-over-item');
+            }
+        }
+
+        function handleObjectDragLeave(e) {
+            this.classList.remove('drag-over-item');
+        }
+
+        function handleObjectDrop(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.classList.remove('drag-over-item');
+            
+            // If dragging from palette (new item), add to bottom
+            if (draggedType && !draggedElement) {
+                addObject(draggedType);
+                draggedType = null;
+                return;
+            }
+            
+            // If reordering existing items
+            if (draggedElement && draggedElement !== this) {
+                const fromIndex = parseInt(draggedElement.dataset.index);
+                const toIndex = parseInt(this.dataset.index);
+                
+                // Reorder array
+                const [moved] = storyData.objects.splice(fromIndex, 1);
+                storyData.objects.splice(toIndex, 0, moved);
+                
+                renderObjects();
+                autoSave();
+            }
+        }
+
+        // Color Management
+        function updateTypeColor(type, color) {
+            storyData.typeColors[type] = color;
+            document.documentElement.style.setProperty(`--color-${type}`, color);
+            
+            // Update the dot in sidebar
+            const dot = document.querySelector(`.palette-item[data-type="${type}"] .color-dot`);
+            if (dot) dot.style.background = color;
+            
+            renderObjects();
+            autoSave();
+        }
+
+        // Save/Load Functions
+        function autoSave() {
+            storyData.title = document.getElementById('storyTitle').value;
+            clearTimeout(window.autoSaveTimeout);
+            window.autoSaveTimeout = setTimeout(saveToLocal, 1000);
+        }
+
+        function saveToLocal() {
+            storyData.title = document.getElementById('storyTitle').value;
+            localStorage.setItem('storyPlannerData', JSON.stringify(storyData));
+            showToast('Saved to browser');
+        }
+
+        function loadFromLocal() {
+            const saved = localStorage.getItem('storyPlannerData');
+            if (saved) {
+                try {
+                    storyData = JSON.parse(saved);
+                    document.getElementById('storyTitle').value = storyData.title || '';
+                    
+                    // Apply saved theme and palette
+                    if (storyData.theme) {
+                        document.documentElement.setAttribute('data-theme', storyData.theme);
+                        const themeSelect = document.getElementById('themeSelect');
+                        if (themeSelect) themeSelect.value = storyData.theme;
+                    }
+                    
+                    if (storyData.palette) {
+                        document.documentElement.setAttribute('data-palette', storyData.palette);
+                        const paletteSelect = document.getElementById('paletteSelect');
+                        if (paletteSelect) paletteSelect.value = storyData.palette;
+                    }
+                    
+                    // Apply saved type colors
+                    Object.entries(storyData.typeColors).forEach(([type, color]) => {
+                        document.documentElement.style.setProperty(`--color-${type}`, color);
+                        const picker = document.querySelector(`.color-picker-mini[data-type="${type}"]`);
+                        if (picker) picker.value = color;
+                        const dot = document.querySelector(`.palette-item[data-type="${type}"] .color-dot`);
+                        if (dot) dot.style.background = color;
+                    });
+                    
+                    renderObjects();
+                } catch (e) {
+                    console.error('Failed to load saved data:', e);
+                }
+            }
+        }
+
+        function saveToFile() {
+            storyData.title = document.getElementById('storyTitle').value;
+            const blob = new Blob([JSON.stringify(storyData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = (storyData.title || 'story-plan') + '.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Exported to file');
+        }
+
+        function loadFromFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    storyData = JSON.parse(e.target.result);
+                    document.getElementById('storyTitle').value = storyData.title || '';
+                    
+                    // Apply loaded theme and palette
+                    if (storyData.theme) {
+                        document.documentElement.setAttribute('data-theme', storyData.theme);
+                        document.getElementById('themeSelect').value = storyData.theme;
+                    }
+                    
+                    if (storyData.palette) {
+                        document.documentElement.setAttribute('data-palette', storyData.palette);
+                        document.getElementById('paletteSelect').value = storyData.palette;
+                    }
+                    
+                    // Apply loaded type colors
+                    Object.entries(storyData.typeColors).forEach(([type, color]) => {
+                        document.documentElement.style.setProperty(`--color-${type}`, color);
+                        const picker = document.querySelector(`.color-picker-mini[data-type="${type}"]`);
+                        if (picker) picker.value = color;
+                        const dot = document.querySelector(`.palette-item[data-type="${type}"] .color-dot`);
+                        if (dot) dot.style.background = color;
+                    });
+                    
+                    renderObjects();
+                    saveToLocal();
+                    showToast('Imported successfully');
+                } catch (err) {
+                    showToast('Failed to import file');
+                    console.error(err);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; // Reset input
+        }
+
+        function exportToDoc() {
+            storyData.title = document.getElementById('storyTitle').value;
+            
+            let content = `<html><head><meta charset="utf-8"><title>${escapeHtml(storyData.title || 'Story Plan')}</title></head><body>`;
+            content += `<h1>${escapeHtml(storyData.title || 'Story Plan')}</h1>`;
+            
+            storyData.objects.forEach(obj => {
+                const indent = '&nbsp;&nbsp;&nbsp;&nbsp;'.repeat(obj.indent);
+                content += `<p>${indent}<strong>[${obj.type.toUpperCase()}]</strong> ${escapeHtml(obj.title || 'Untitled')}</p>`;
+                
+                const fieldIndent = '&nbsp;&nbsp;&nbsp;&nbsp;'.repeat(obj.indent + 1);
+                
+                // Description or Summary
+                const descField = obj.type === 'outline' ? obj.fields.summary : obj.fields.description;
+                if (descField) content += `<p>${fieldIndent}${escapeHtml(descField)}</p>`;
+                
+                // Ensure arrays exist
+                const locations = obj.fields.locations || [];
+                const dates = obj.fields.dates || [];
+                const characters = obj.fields.characters || [];
+                const notes = obj.fields.notes || [];
+                
+                // Locations
+                locations.forEach(loc => {
+                    if (loc) content += `<p>${fieldIndent}Location: ${escapeHtml(loc)}</p>`;
+                });
+                
+                // Dates
+                dates.forEach(date => {
+                    if (date) content += `<p>${fieldIndent}Date: ${escapeHtml(date)}</p>`;
+                });
+                
+                // Characters
+                characters.forEach(char => {
+                    if (char && char.name) {
+                        content += `<p>${fieldIndent}Character: ${escapeHtml(char.name)}${char.isPOV ? ' (POV)' : ''}</p>`;
+                    }
+                });
+                
+                // Notes
+                notes.forEach(note => {
+                    if (note) content += `<p>${fieldIndent}<em>Note: ${escapeHtml(note)}</em></p>`;
+                });
+            });
+            
+            content += '</body></html>';
+            
+            const blob = new Blob([content], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = (storyData.title || 'story-plan') + '.doc';
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Exported to .doc');
+        }
+
+        // Utility functions
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function showEmptyState() {
+            renderObjects();
+        }
+
+        function hideEmptyState() {
+            // Handled by renderObjects
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        // Auto-save on title change
+        document.getElementById('storyTitle').addEventListener('input', autoSave);
+    </script>
+</body>
+</html>
