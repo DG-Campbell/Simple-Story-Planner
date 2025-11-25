@@ -1744,7 +1744,14 @@
 
         function saveToFile() {
             storyData.title = document.getElementById('storyTitle').value;
-            const blob = new Blob([JSON.stringify(storyData, null, 2)], { type: 'application/json' });
+            
+            // Export only the essential data, not theme/palette settings
+            const exportData = {
+                title: storyData.title,
+                objects: storyData.objects
+            };
+            
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -1761,28 +1768,13 @@
             const reader = new FileReader();
             reader.onload = (e) => {
                 try {
-                    storyData = JSON.parse(e.target.result);
-                    document.getElementById('storyTitle').value = storyData.title || '';
+                    const importedData = JSON.parse(e.target.result);
                     
-                    // Apply loaded theme and palette
-                    if (storyData.theme) {
-                        document.documentElement.setAttribute('data-theme', storyData.theme);
-                        document.getElementById('themeSelect').value = storyData.theme;
-                    }
+                    // Only import title and objects, keep current theme/palette
+                    storyData.title = importedData.title || '';
+                    storyData.objects = importedData.objects || [];
                     
-                    if (storyData.palette) {
-                        document.documentElement.setAttribute('data-palette', storyData.palette);
-                        document.getElementById('paletteSelect').value = storyData.palette;
-                    }
-                    
-                    // Apply loaded type colors
-                    Object.entries(storyData.typeColors).forEach(([type, color]) => {
-                        document.documentElement.style.setProperty(`--color-${type}`, color);
-                        const picker = document.querySelector(`.color-picker-mini[data-type="${type}"]`);
-                        if (picker) picker.value = color;
-                        const dot = document.querySelector(`.palette-item[data-type="${type}"] .color-dot`);
-                        if (dot) dot.style.background = color;
-                    });
+                    document.getElementById('storyTitle').value = storyData.title;
                     
                     renderObjects();
                     saveToLocal();
