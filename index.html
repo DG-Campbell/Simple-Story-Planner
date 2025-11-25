@@ -260,6 +260,10 @@
             --color-beat: #10b981;
             --color-chapter: #3b82f6;
             --color-outline: #f59e0b;
+            --color-act-text: #ffffff;
+            --color-beat-text: #ffffff;
+            --color-chapter-text: #ffffff;
+            --color-outline-text: #1a1a1a;
         }
 
         /* RYGB */
@@ -268,6 +272,10 @@
             --color-beat: #eab308;
             --color-chapter: #22c55e;
             --color-outline: #3b82f6;
+            --color-act-text: #ffffff;
+            --color-beat-text: #1a1a1a;
+            --color-chapter-text: #1a1a1a;
+            --color-outline-text: #ffffff;
         }
 
         /* Greyscale */
@@ -276,6 +284,10 @@
             --color-beat: #a3a3a3;
             --color-chapter: #737373;
             --color-outline: #404040;
+            --color-act-text: #1a1a1a;
+            --color-beat-text: #1a1a1a;
+            --color-chapter-text: #ffffff;
+            --color-outline-text: #ffffff;
         }
 
         /* Protanopia (red-blind) */
@@ -284,6 +296,10 @@
             --color-beat: #33bbee;
             --color-chapter: #009988;
             --color-outline: #ee7733;
+            --color-act-text: #ffffff;
+            --color-beat-text: #1a1a1a;
+            --color-chapter-text: #ffffff;
+            --color-outline-text: #1a1a1a;
         }
 
         /* Deuteranopia (green-blind) */
@@ -292,6 +308,10 @@
             --color-beat: #33bbee;
             --color-chapter: #cc3311;
             --color-outline: #ee7733;
+            --color-act-text: #ffffff;
+            --color-beat-text: #1a1a1a;
+            --color-chapter-text: #ffffff;
+            --color-outline-text: #1a1a1a;
         }
 
         /* Tritanopia (blue-blind) */
@@ -300,6 +320,10 @@
             --color-beat: #009988;
             --color-chapter: #ee7733;
             --color-outline: #cc3311;
+            --color-act-text: #ffffff;
+            --color-beat-text: #ffffff;
+            --color-chapter-text: #1a1a1a;
+            --color-outline-text: #ffffff;
         }
 
         /* Monochromacy (total color blindness) */
@@ -308,6 +332,10 @@
             --color-beat: #b0b0b0;
             --color-chapter: #707070;
             --color-outline: #383838;
+            --color-act-text: #1a1a1a;
+            --color-beat-text: #1a1a1a;
+            --color-chapter-text: #ffffff;
+            --color-outline-text: #ffffff;
         }
 
         /* High Contrast */
@@ -316,6 +344,10 @@
             --color-beat: #00ff00;
             --color-chapter: #0000ff;
             --color-outline: #ffff00;
+            --color-act-text: #ffffff;
+            --color-beat-text: #1a1a1a;
+            --color-chapter-text: #ffffff;
+            --color-outline-text: #1a1a1a;
         }
 
         /* Pastel */
@@ -324,6 +356,10 @@
             --color-beat: #98e4c9;
             --color-chapter: #93c5fd;
             --color-outline: #fcd34d;
+            --color-act-text: #1a1a1a;
+            --color-beat-text: #1a1a1a;
+            --color-chapter-text: #1a1a1a;
+            --color-outline-text: #1a1a1a;
         }
 
         /* Neon */
@@ -332,6 +368,10 @@
             --color-beat: #00ff88;
             --color-chapter: #00ccff;
             --color-outline: #ffcc00;
+            --color-act-text: #ffffff;
+            --color-beat-text: #1a1a1a;
+            --color-chapter-text: #1a1a1a;
+            --color-outline-text: #1a1a1a;
         }
 
         /* Earth Tones */
@@ -340,6 +380,10 @@
             --color-beat: #6b8e23;
             --color-chapter: #4682b4;
             --color-outline: #daa520;
+            --color-act-text: #ffffff;
+            --color-beat-text: #ffffff;
+            --color-chapter-text: #ffffff;
+            --color-outline-text: #1a1a1a;
         }
 
         * {
@@ -803,6 +847,31 @@
             margin-top: 0.75rem;
         }
 
+        .insert-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .insert-btn {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.3rem 0.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            opacity: 0.85;
+        }
+
+        .insert-btn:hover {
+            opacity: 1;
+            transform: translateY(-1px);
+        }
+
         .add-field-btn {
             font-size: 0.75rem;
             color: var(--text-muted);
@@ -1235,6 +1304,36 @@
             }, 50);
         }
 
+        function insertObjectAfter(afterId, type) {
+            const id = 'obj_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            const afterIndex = storyData.objects.findIndex(o => o.id === afterId);
+            const afterObject = storyData.objects[afterIndex];
+            
+            const newObject = {
+                id,
+                type,
+                title: '',
+                indent: afterObject ? afterObject.indent : 0,
+                expanded: true,
+                colorOverride: null,
+                note: '',
+                noteVisible: false,
+                fields: getDefaultFields(type)
+            };
+
+            // Insert right after the target object
+            storyData.objects.splice(afterIndex + 1, 0, newObject);
+            renderObjects();
+            hideEmptyState();
+            autoSave();
+            
+            // Focus the title input
+            setTimeout(() => {
+                const el = document.querySelector(`[data-id="${id}"] .object-title-input`);
+                if (el) el.focus();
+            }, 50);
+        }
+
         function getDefaultFields(type) {
             // All types now have arrays for multiple optional fields
             return {
@@ -1423,6 +1522,12 @@
                                 value="${obj.colorOverride || storyData.typeColors[obj.type]}"
                                 onchange="updateObjectField('${obj.id}', 'colorOverride', this.value)">
                             ${obj.colorOverride ? `<button class="object-btn" onclick="updateObjectField('${obj.id}', 'colorOverride', null); renderObjects();">Reset</button>` : ''}
+                        </div>
+                        <div class="insert-row">
+                            <button class="insert-btn" style="background: var(--color-act); color: var(--color-act-text, #fff);" onclick="insertObjectAfter('${obj.id}', 'act')">+ Act</button>
+                            <button class="insert-btn" style="background: var(--color-beat); color: var(--color-beat-text, #fff);" onclick="insertObjectAfter('${obj.id}', 'beat')">+ Beat</button>
+                            <button class="insert-btn" style="background: var(--color-chapter); color: var(--color-chapter-text, #fff);" onclick="insertObjectAfter('${obj.id}', 'chapter')">+ Chapter</button>
+                            <button class="insert-btn" style="background: var(--color-outline); color: var(--color-outline-text, #fff);" onclick="insertObjectAfter('${obj.id}', 'outline')">+ Outline</button>
                         </div>
                     </div>
                 </div>
